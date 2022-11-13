@@ -18,24 +18,69 @@ class DataController extends Controller
      */
     public function index(Request $request)
     {
+        if (!DB::table('stats_report')->exists()) {
+            DB::connection('mysql')->select("
+            create view stats_report as
+            select
+            sa.area_name , pb.brand_name , p.product_name , sum(rp.compliance) as compliance , rp.`date`
+            from report_products rp
+            inner join stores s on rp.store_id = s.id
+            inner join store_areas sa on s.store_area_id = sa.id
+            inner join products p on rp.product_id = p.id
+            inner join product_brands pb on p.product_brand_id = pb.id
+            group by area_name, brand_name, date
+            ");
+        };
+
+        return view('index', [
+            'store_areas' => StoreArea::all(),
+            'date_from' => '2021-01-01',
+            'date_to' => '2021-12-31'
+        ]);
     }
 
-    public function getData(Request $request)
+    public function getData($area, $date_from, $date_to)
     {
-        if ($request->ajax()) {
-            $query = DB::table('report_products')
-                ->join('stores', 'report_products.store_id', '=', 'stores.id')
-                ->join('products', 'report_products.product_id', '=', 'products.id')
-                ->select('report_products.*', 'stores.store_name', 'products.product_name')
-                ->where('report_products.deleted_at', null)
-                ->orderBy('report_products.created_at', 'desc');
-
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->make(true);
+        if ($area == 'all_area') {
+            $whereAreaName = "and area_name in ('DKI Jakarta', 'Jawa Barat', 'Kalimantan', 'Jawa Tengah', 'Bali') group by brand_name, sr.date";
+        } else {
+            $whereAreaName = "and area_name = '$area' group by brand_name, sr.date";
         }
 
-        return view('data');
+        $query = DB::connection('mysql')->select("SELECT
+                brand, sum(dki_jakarta) as dki_jakarta, sum(jawa_barat) as jawa_barat, sum(kalimantan) as kalimantan, sum(jawa_tengah) as jawa_tengah, sum(bali) as bali
+                from (
+                    select
+                    brand_name as brand, area_name , sr.date,
+                    (select (SUM(compliance)/(select count(*) from report_products rp2) * 100) from stats_report sr2 where sr2.area_name = 'DKI Jakarta' and sr2.area_name = sr.area_name and sr2.date = sr.date group by sr2.area_name) as 'dki_jakarta',
+                    (select (SUM(compliance)/(select count(*) from report_products rp2) * 100) from stats_report sr2 where sr2.area_name = 'Jawa Barat' and sr2.area_name = sr.area_name and sr2.date = sr.date group by sr2.area_name) as 'jawa_barat',
+                    (select (SUM(compliance)/(select count(*) from report_products rp2) * 100) from stats_report sr2 where sr2.area_name = 'Kalimantan' and sr2.area_name = sr.area_name and sr2.date = sr.date group by sr2.area_name) as 'kalimantan',
+                    (select (SUM(compliance)/(select count(*) from report_products rp2) * 100) from stats_report sr2 where sr2.area_name = 'Jawa Tengah' and sr2.area_name = sr.area_name and sr2.date = sr.date group by sr2.area_name) as 'jawa_tengah',
+                    (select (SUM(compliance)/(select count(*) from report_products rp2) * 100) from stats_report sr2 where sr2.area_name = 'Bali' and sr2.area_name = sr.area_name and sr2.date = sr.date group by sr2.area_name) as 'bali'
+                    from stats_report sr
+                    where sr.date between '$date_from' and '$date_to'
+                    $whereAreaName
+                )x group by brand
+            ");
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->editColumn('dki_jakarta', function ($row) {
+                return round($row->dki_jakarta) . '%';
+            })
+            ->editColumn('jawa_barat', function ($row) {
+                return round($row->jawa_barat) . '%';
+            })
+            ->editColumn('kalimantan', function ($row) {
+                return round($row->kalimantan) . '%';
+            })
+            ->editColumn('jawa_tengah', function ($row) {
+                return round($row->jawa_tengah) . '%';
+            })
+            ->editColumn('bali', function ($row) {
+                return round($row->bali) . '%';
+            })
+            ->make(true);
     }
 
 

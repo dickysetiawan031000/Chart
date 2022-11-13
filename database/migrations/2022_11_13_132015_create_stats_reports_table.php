@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('report_products', function (Blueprint $table) {
+        Schema::create('stats_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_id');
-            $table->foreignId('product_id');
-            $table->integer('compliance');
-            $table->date('date');
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('report_products');
+        Schema::dropIfExists('stats_reports');
     }
 };

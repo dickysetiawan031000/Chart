@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10000)->create();
+        \App\Models\User::factory(1000)->create();
+        // \App\Models\ProductBrand::factory()->create();
+        // \App\Models\Product::factory(100)->create();
+        // \App\Models\ReportProduct::factory(100)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
@@ -77,6 +80,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '1',
             'compliance' => '1',
+            'date' => '2021-01-01',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -85,6 +89,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '2',
             'compliance' => '1',
+            'date' => '2021-01-01',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -93,6 +98,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '3',
             'compliance' => '0',
+            'date' => '2021-01-02',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -101,6 +107,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '4',
             'compliance' => '0',
+            'date' => '2021-01-02',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -109,6 +116,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '5',
             'compliance' => '1',
+            'date' => '2021-01-02',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -117,6 +125,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '1',
             'product_id' => '6',
             'compliance' => '0',
+            'date' => '2021-01-03',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -125,6 +134,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '1',
             'compliance' => '1',
+            'date' => '2021-01-03',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -133,6 +143,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '2',
             'compliance' => '0',
+            'date' => '2021-01-04',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -141,6 +152,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '3',
             'compliance' => '0',
+            'date' => '2021-01-04',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -149,6 +161,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '4',
             'compliance' => '1',
+            'date' => '2021-01-04',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -157,6 +170,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '5',
             'compliance' => '0',
+            'date' => '2021-01-05',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -165,6 +179,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '2',
             'product_id' => '6',
             'compliance' => '1',
+            'date' => '2021-01-05',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -173,6 +188,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '1',
             'compliance' => '0',
+            'date' => '2021-01-05',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -181,6 +197,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '2',
             'compliance' => '1',
+            'date' => '2021-01-05',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -189,6 +206,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '3',
             'compliance' => '0',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -197,6 +215,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '4',
             'compliance' => '0',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -205,6 +224,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '5',
             'compliance' => '1',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -212,6 +232,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '3',
             'product_id' => '6',
             'compliance' => '0',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -220,6 +241,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '1',
             'compliance' => '1',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -228,6 +250,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '2',
             'compliance' => '0',
+            'date' => '2021-01-06',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -236,6 +259,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '3',
             'compliance' => '0',
+            'date' => '2021-01-07',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -244,6 +268,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '4',
             'compliance' => '0',
+            'date' => '2021-01-07',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -252,6 +277,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '5',
             'compliance' => '1',
+            'date' => '2021-01-08',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -260,6 +286,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '4',
             'product_id' => '6',
             'compliance' => '0',
+            'date' => '2021-01-09',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -268,6 +295,7 @@ class DatabaseSeeder extends Seeder
             'store_id' => '5',
             'product_id' => '1',
             'compliance' => '1',
+            'date' => '2021-01-10',
             'created_at' => now(),
             'updated_at' => now()
         ]);

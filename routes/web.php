@@ -23,7 +23,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 // Route::get('data', [DataController::class, 'index'])->name('data.index');
-Route::get('data', [DataController::class, 'getData'])->name('data.getData');
+Route::get('data', [DataController::class, 'index'])->name('data.index');
+Route::get('data/data/{area}/{date_from}/{date_to}', [DataController::class, 'getData'])->name('data.getData');
+
+
 Route::get('users', [UserController::class, 'index'])->name('users.index');
 // Route::resource('/', DataController::class);
 // Route::get('/table', [DataController::class, 'table'])->name('table');

@@ -15,6 +15,7 @@ class ReportProduct extends Model
         'store_id',
         'product_id',
         'compliance',
+        'date'
     ];
 
     protected $hidden = [];
