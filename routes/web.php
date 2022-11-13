@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 // });
 // Route::get('data', [DataController::class, 'index'])->name('data.index');
 Route::get('data', [DataController::class, 'index'])->name('data.index');
-Route::get('data/data/{area}/{date_from}/{date_to}', [DataController::class, 'getData'])->name('data.getData');
+Route::get('data/data/{for}/{area}/{date_from}/{date_to}', [DataController::class, 'getData'])->name('data.getData');
 
 
 Route::get('users', [UserController::class, 'index'])->name('users.index');

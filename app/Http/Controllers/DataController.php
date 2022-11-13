@@ -16,7 +16,7 @@ class DataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         // check view stats_report table is exist
         if (!DB::connection('mysql')->select('SHOW TABLES LIKE "stats_report"')) {
@@ -40,7 +40,7 @@ class DataController extends Controller
         ]);
     }
 
-    public function getData($area, $date_from, $date_to)
+    public function getData($for, $area, $date_from, $date_to)
     {
         if ($area == 'all_area') {
             $whereAreaName = "and area_name in ('DKI Jakarta', 'Jawa Barat', 'Kalimantan', 'Jawa Tengah', 'Bali') group by brand_name, sr.date";
@@ -64,24 +64,30 @@ class DataController extends Controller
                 )x group by brand
             ");
 
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->editColumn('dki_jakarta', function ($row) {
-                return round($row->dki_jakarta) . '%';
-            })
-            ->editColumn('jawa_barat', function ($row) {
-                return round($row->jawa_barat) . '%';
-            })
-            ->editColumn('kalimantan', function ($row) {
-                return round($row->kalimantan) . '%';
-            })
-            ->editColumn('jawa_tengah', function ($row) {
-                return round($row->jawa_tengah) . '%';
-            })
-            ->editColumn('bali', function ($row) {
-                return round($row->bali) . '%';
-            })
-            ->make(true);
+        if ($for == 'datatable') {
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->editColumn('dki_jakarta', function ($row) {
+                    return round($row->dki_jakarta) . '%';
+                })
+                ->editColumn('jawa_barat', function ($row) {
+                    return round($row->jawa_barat) . '%';
+                })
+                ->editColumn('kalimantan', function ($row) {
+                    return round($row->kalimantan) . '%';
+                })
+                ->editColumn('jawa_tengah', function ($row) {
+                    return round($row->jawa_tengah) . '%';
+                })
+                ->editColumn('bali', function ($row) {
+                    return round($row->bali) . '%';
+                })
+                ->make(true);
+        } else if ($for == 'chart') {
+            return response()->json([
+                'data' => $query
+            ]);
+        }
     }
 
 

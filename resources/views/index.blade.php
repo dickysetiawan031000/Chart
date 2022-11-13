@@ -39,7 +39,47 @@
             <div class="col-md-2">
                 <button type="button" class="btn btn-primary" id="btn-view">View</button>
             </div>
-            <div class="col-md-12 mt-3">
+            <figure class="highcharts-figure mt-5 mb-5">
+                <div id="container"></div>
+
+                <table id="datatable" style="display: none">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Roti Tawar</th>
+                            <th>Susu Kaleng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>DKI Jakarta</th>
+                            <td id="roti_tawar_dki_jkt">30 386</td>
+                            <td id="susu_kaleng_dki_jkt">28 504</td>
+                        </tr>
+                        <tr>
+                            <th>Jawa Barat</th>
+                            <td>29 173</td>
+                            <td>27 460</td>
+                        </tr>
+                        <tr>
+                            <th>Kalimantan</th>
+                            <td>28 430</td>
+                            <td>26 690</td>
+                        </tr>
+                        <tr>
+                            <th>Jawa Tengah</th>
+                            <td>28 042</td>
+                            <td>26 453</td>
+                        </tr>
+                        <tr>
+                            <th>Bali</th>
+                            <td>27 063</td>
+                            <td>25 916</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+            <div class="col-md-12 mt-3 mb-5">
                 <table class="table table-bordered" id="data">
                     <thead>
                         <tr>
@@ -80,6 +120,17 @@
 <!-- ajax overlay -->
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
 </script>
+<!-- highchart -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!-- axios -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"
+    integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- datatable #data -->
 <script type="text/javascript">
@@ -88,7 +139,7 @@
     var table = $('#data').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/data/data/" + $('#select-area').val() + "/" + $('#date-from').val() + "/" + $('#date-to').val(),
+        ajax: "/data/data/datatable/" + $('#select-area').val() + "/" + $('#date-from').val() + "/" + $('#date-to').val(),
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             {data: 'brand', name: 'brand'},
@@ -101,6 +152,40 @@
     });
 
   });
+</script>
+
+<!-- highchart -->
+<script>
+    let chart = Highcharts.chart('container', {
+                    data: {
+                        table: 'datatable'
+                    },
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Report'
+                    },
+                    subtitle: {
+                        text:
+                            'Report'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        allowDecimals: false,
+                        title: {
+                            text: 'Amount'
+                        }
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            return '<b>' + this.series.name + '</b><br/>' +
+                                this.point.y + ' ' + this.point.name.toLowerCase();
+                        }
+                    }
+                });
 </script>
 
 <!-- datepicker init -->
@@ -144,12 +229,26 @@
                 text: 'Please fill all fields',
             })
         } else {
+            // chart
+            axios
+            .get("/data/data/chart/" + $('#select-area').val() + "/" + $('#date-from').val() + "/" + $('#date-to').val())
+            .then(res => {
+                // get text of #roti_tawar_dki_jakarta
+                console.log($("#roti_tawar_dki_jakarta").text())
+                console.log(res.data.data[0].dki_jakarta)
+
+
+                // refresh chart
+                chart.redraw();
+            })
+
+
             $('#data').DataTable().destroy();
             $('#data').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/data/data/" + area + "/" + date_from + "/" + date_to
+                    url: "/data/data/datatable/" + area + "/" + date_from + "/" + date_to
                 },
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
