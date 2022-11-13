@@ -235,6 +235,7 @@
             .then(res => {
                 // get text of #roti_tawar_dki_jakarta
                 console.log($("#roti_tawar_dki_jakarta").text())
+                console.log(res)
                 console.log(res.data.data[0].dki_jakarta)
 
 
