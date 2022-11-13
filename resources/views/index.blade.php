@@ -131,7 +131,13 @@
         let date_from = $('#date-from').val();
         let date_to = $('#date-to').val();
 
-        if (area == null || date_from == '' || date_to == '') {
+        if (date_from > date_to) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Date From must be less than Date To',
+            })
+        } else if (area == null || date_from == '' || date_to == '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
