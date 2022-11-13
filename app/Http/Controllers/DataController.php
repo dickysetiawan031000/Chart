@@ -18,19 +18,20 @@ class DataController extends Controller
      */
     public function index(Request $request)
     {
-        if (!DB::table('stats_report')->exists()) {
+        // check view stats_report table is exist
+        if (!DB::connection('mysql')->select('SHOW TABLES LIKE "stats_report"')) {
             DB::connection('mysql')->select("
-            create view stats_report as
-            select
-            sa.area_name , pb.brand_name , p.product_name , sum(rp.compliance) as compliance , rp.`date`
-            from report_products rp
-            inner join stores s on rp.store_id = s.id
-            inner join store_areas sa on s.store_area_id = sa.id
-            inner join products p on rp.product_id = p.id
-            inner join product_brands pb on p.product_brand_id = pb.id
-            group by area_name, brand_name, date
+                create view stats_report as
+                select
+                sa.area_name , pb.brand_name , p.product_name , sum(rp.compliance) as compliance , rp.`date`
+                from report_products rp
+                inner join stores s on rp.store_id = s.id
+                inner join store_areas sa on s.store_area_id = sa.id
+                inner join products p on rp.product_id = p.id
+                inner join product_brands pb on p.product_brand_id = pb.id
+                group by area_name, brand_name, date
             ");
-        };
+        }
 
         return view('index', [
             'store_areas' => StoreArea::all(),
